@@ -1,0 +1,17 @@
+node_modules/
+.env
+.env.*
+!.env.example
+uploads/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.DS_Store
+Thumbs.db
+package-lock.json
+package.json
+config.env
+src/Config/serviceAccountKey.json
+
+.early.coverage
