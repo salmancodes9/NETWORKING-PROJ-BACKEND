@@ -3,10 +3,10 @@ module.exports = async (sequelize, SyncMode = "none", tableAlter) => {
     await sequelize.authenticate();
     if (SyncMode === "alter") {
       await sequelize.sync({ alter: true });
-    } else if (syncMode === "force" && process.env.ENVIRONMENT === "devlopment") {
-        await sequelize.sync({alter:true})
-    }else if(tableAlter){
-        await tableAlter.sync({alter:true})
+    } else if (SyncMode === "force" && process.env.ENVIRONMENT === "development") {
+      await sequelize.sync({ force: true });
+    } else if (tableAlter) {
+      await tableAlter.sync({ alter: true });
     }
     console.log("Database connection established")
   } catch (err) {

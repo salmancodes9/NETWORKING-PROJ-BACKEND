@@ -1,4 +1,4 @@
-const user = require("../../Models/user.model");
+const db = require("../../Models");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -12,7 +12,32 @@ module.exports = async ({ name, email, password }) => {
   if (!email) throw new Error("email cannot be empty");
   if (!password || password.length < 8) throw new Error("weak password");
 
-  const existingUser = await user.findOne({ where: { email } });
+  const normalizedEmail = email.trim().toLowerCase();
+
+  const existingUser = await db.User.findOne({
+    where: { email: normalizedEmail },
+  });
   if (existingUser) throw new Error("email already exists");
+
   const hashedPassword = await bcrypt.hash(password, 10);
+
+  const createdUser = await db.User.create({
+    name: name.trim(),
+    email: normalizedEmail,
+    password: hashedPassword,
+  });
+  const token = jwt.sign(
+    { id: createdUser.id, email: createdUser.email },
+    JWT_SECRET,
+    { expiresIn: "4h" },
+  );
+  return {
+    message: "registered  and logged in successfully",
+    token,
+    user: {
+      id: createdUser.id,
+      name: createdUser.name,
+      email: createdUser.email,
+    },
+  };
 };
