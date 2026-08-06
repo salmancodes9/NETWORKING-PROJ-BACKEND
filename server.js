@@ -1,14 +1,14 @@
-require("dotenv").config({path: "./.env"});
-require('./src/Models/index')
-const {app} = require("./app");
+require("dotenv").config({ path: "./.env" });
+require("./src/Models/index");
+const http = require("http");
+
+const { app } = require("./app");
+const initSocket = require("./src/socket/index");
+const server = http.createServer(app);
+initSocket(server);
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-  console.log(`server is runing on http://localhost:${PORT}`);
-
+server.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
-
-
-
-

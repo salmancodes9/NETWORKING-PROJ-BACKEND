@@ -3,9 +3,9 @@ const jwt = require("jsonwebtoken");
 
 const authenticate = async (req, res, next) => {
   try {
-    const authHeader = req.header["authorization"];
-    const token = authHeader?.startsWith("Bearer")
-      ? authHeader.split("")[1]
+    const authHeader = req.headers.authorization || req.get("authorization");
+    const token = authHeader?.startsWith("Bearer ")
+      ? authHeader.slice(7)
       : authHeader;
 
     if (!token) {
@@ -23,7 +23,7 @@ const authenticate = async (req, res, next) => {
       return res.status(401).json({ message: "Invalid token" });
     }
 
-    const currentUser = await db.user.findOne({ where: { id: decoded.id } });
+    const currentUser = await db.User.findOne({ where: { id: decoded.id } });
     if (!currentUser) {
       return res.status(401).json({ message: "user no longer exists" });
     }
@@ -35,3 +35,5 @@ const authenticate = async (req, res, next) => {
     return res.status(401).json({ message: "Authentication failed" });
   }
 };
+
+module.exports = authenticate;
