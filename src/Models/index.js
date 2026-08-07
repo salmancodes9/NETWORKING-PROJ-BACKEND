@@ -1,10 +1,11 @@
-const { DataTypes } = require('sequelize');
+const { Sequelize,DataTypes } = require('sequelize');
 
 const dbInitalize = require('../Config/initializeDatabase');
 const sequelize = require('../Config/sequelize.config');
 
 const db = {};
 db.sequelize = sequelize;
+db.Sequelize = Sequelize
 
 db.User = require('./user.model')(sequelize, DataTypes);
 db.Profile = require('./profile.model')(sequelize, DataTypes);
