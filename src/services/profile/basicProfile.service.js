@@ -2,7 +2,7 @@ const db = require("../../Models");
 const s3UploadService = require("../../aws/s3UploadService.aws");
 const getS3SignedUrl = require("../../aws/s3SignedUrlService.aws");
 
-module.exports = async ({ bio, userId, file }) => {
+const createProfileService = async ({ bio, userId, file }) => {
   try {
     if (!bio) {
       throw new Error("bio cannot be empty");
@@ -51,3 +51,6 @@ module.exports = async ({ bio, userId, file }) => {
     throw new Error(err.message || "something went wrong");
   }
 };
+
+module.exports = createProfileService;
+module.exports.createProfileService = createProfileService;
