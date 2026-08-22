@@ -14,6 +14,7 @@ const authenticate = async (req, res, next) => {
     let decoded;
     try {
       decoded = jwt.verify(token, process.env.JWT_SECRET);
+      console.log("Decoded Token",decoded)
     } catch (err) {
       if (err.name === "TokenExpiredError") {
         return res
@@ -24,11 +25,13 @@ const authenticate = async (req, res, next) => {
     }
 
     const currentUser = await db.User.findOne({ where: { id: decoded.id } });
+    console.log("Current user:", currentUser?.toJSON());
     if (!currentUser) {
       return res.status(401).json({ message: "user no longer exists" });
     }
 
     req.user = currentUser;
+    console.log("Authenticated user ID:", req.user.id);
     next();
   } catch (err) {
     console.error("Authentication error:", err.message);

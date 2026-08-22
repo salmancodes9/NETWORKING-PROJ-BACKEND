@@ -6,7 +6,7 @@ const getMyProfileService = async ({ userId }) => {
     throw new Error("User is not authenticated");
   }
   const profile = await db.Profile.findOne({
-    where: { userId },
+    where: {id:userId },
     include: [
       {
         model: db.User,

@@ -5,9 +5,10 @@ const createProfile = async (req, res) => {
     const result = await createProfileService({
       ...req.body,
       userId: req.user.id,
+    
       file: req.file,
     }); //completedd
-
+    
     return res.status(201).json({
       message: "Profile created",
       profile: result,

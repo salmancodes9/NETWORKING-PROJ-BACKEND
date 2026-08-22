@@ -4,6 +4,7 @@ const getS3SignedUrl = require("../../aws/s3SignedUrlService.aws");
 
 const createProfileService = async ({ bio, userId, file }) => {
   try {
+
     if (!bio) {
       throw new Error("bio cannot be empty");
     }
@@ -13,7 +14,7 @@ const createProfileService = async ({ bio, userId, file }) => {
     }
 
     const existingProfile = await db.Profile.findOne({
-      where: { userId },
+      where: { id:userId },
     });
 
     if (existingProfile) {
@@ -33,7 +34,7 @@ const createProfileService = async ({ bio, userId, file }) => {
     const profileCreation = await db.Profile.create({
       bio,
       profilePicUrl,
-      userId,
+      id: userId,
     });
 
     if (profileCreation.profilePicUrl) {
