@@ -2,6 +2,8 @@ const db = require("../../Models");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_REFRESH_SECRET = process.env.JWT_SECRET;
+
 
 module.exports = async ({ email, password }) => {
   if (!email || !password) throw new Error("email field is empty");
@@ -12,6 +14,7 @@ module.exports = async ({ email, password }) => {
 
   if (!existingUser) throw new Error("User doesnt exist");
   const passwordMatch = await bcrypt.compare(password, existingUser.password);
+  if(!passwordMatch) throw new Error("password is incorrect")
   if (passwordMatch) {
     if (!JWT_SECRET) throw new Error("JWT_SECRET is not configured");
     const token = jwt.sign(
@@ -24,7 +27,13 @@ module.exports = async ({ email, password }) => {
         expiresIn: "4h",
       },
     );
-    return { message: "logged in successfully", token };
+    const refreshToken = jwt.sign(
+      {id: existingUser.id},
+      process.env.JWT_REFRESH_SECRET,
+      {expiresIn :"7d"}
+    )
+    await existingUser.update({refreshToken})
+    return { message: "logged in successfully", token,refreshToken };
   }
-  throw new Error("password incorrect");
+ 
 };

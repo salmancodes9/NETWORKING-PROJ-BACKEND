@@ -11,6 +11,15 @@ db.User = require("./user.model")(sequelize, DataTypes);
 db.Profile = require("./profile.model")(sequelize, DataTypes);
 db.Message = require("./message.model")(sequelize, DataTypes);
 db.Post = require("./post.model")(sequelize, DataTypes);
+//CONNECTIONS///
+db.Connection = require("./connection.model")(sequelize, DataTypes)
+
+db.User.hasMany(db.Connection,{foreignKey:'requesterId', as: 'sentRequests'});
+db.User.hasMany(db.Connection,{foreignKey:'receiverId', as: 'receivedRequests'});
+db.Connection.belongsTo(db.User, {foreignKey:'requesterId', as: 'requester'});
+db.Connection.belongsTo(db.User,{foreignKey:'receiverId', as: 'receiver'})
+
+//END-CONNECTIONS//
 
 // Associations
 db.User.hasOne(db.Profile, { foreignKey: "id", onDelete: "CASCADE" });
@@ -46,7 +55,6 @@ db.Post.belongsTo(db.Profile, {
     foreignKey: "profileId",
 });
 
-// Sync
 // dbInitalize(sequelize, "alter");
 
 module.exports = db;
