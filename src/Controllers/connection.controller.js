@@ -4,7 +4,9 @@ const rejectRequest = require("../services/connections/rejectRequest.connection"
 
 const send = async (req, res) => {
   try {
-    const result = await sendRequest(req.user.id, req.params.receiverId);
+    const receiverId = Number(req.params.receiverId)
+    console.log(receiverId)
+    const result = await sendRequest(req.user.id,receiverId);
     res.status(201).json(result);
   } catch (err) {
     res.status(400).json({ message: err.message });

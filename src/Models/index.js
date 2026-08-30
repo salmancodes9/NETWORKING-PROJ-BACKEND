@@ -11,6 +11,15 @@ db.User = require("./user.model")(sequelize, DataTypes);
 db.Profile = require("./profile.model")(sequelize, DataTypes);
 db.Message = require("./message.model")(sequelize, DataTypes);
 db.Post = require("./post.model")(sequelize, DataTypes);
+
+//education//
+db.School = require('./education/school.model')(sequelize, DataTypes);
+db.Degree = require('./education/degree.model')(sequelize, DataTypes);
+db.FieldOfStudy = require('./education/fieldOfStudy.model')(sequelize, DataTypes);
+db.Education = require('./education/education.model')(sequelize, DataTypes);
+//END-Education//
+
+
 //CONNECTIONS///
 db.Connection = require("./connection.model")(sequelize, DataTypes)
 
@@ -55,6 +64,23 @@ db.Post.belongsTo(db.Profile, {
     foreignKey: "profileId",
 });
 
+//EDUCATION//
+
+db.User.hasMany(db.Education, { foreignKey: 'userId', onDelete: 'CASCADE' });
+db.Education.belongsTo(db.User, { foreignKey: 'userId' });
+
+db.School.hasMany(db.Education, { foreignKey: 'schoolId' });
+db.Education.belongsTo(db.School, { foreignKey: 'schoolId' });
+
+db.Degree.hasMany(db.Education, { foreignKey: 'degreeId' });
+db.Education.belongsTo(db.Degree, { foreignKey: 'degreeId' });
+
+db.FieldOfStudy.hasMany(db.Education, { foreignKey: 'fieldOfStudyId' });
+db.Education.belongsTo(db.FieldOfStudy, { foreignKey: 'fieldOfStudyId' });
+//END-EDUCATION//
+
 // dbInitalize(sequelize, "alter");
+
+
 
 module.exports = db;

@@ -1,7 +1,7 @@
 const express = require("express")
 const router =  express.Router();
 
-const { send , accept } = require("../Controllers/connection.controller");
+const { send , accept, reject } = require("../Controllers/connection.controller");
 const authenticate = require("../Middleware/protectClinet");
 
 router.post("/send/:receiverId",authenticate, send);
