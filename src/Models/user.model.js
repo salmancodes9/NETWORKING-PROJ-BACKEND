@@ -21,8 +21,9 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       role: {
-        type: DataTypes.STRING,
+        type: DataTypes.ENUM("member","company", "admin"),
         defaultValue: "member",
+        allowNull: false
       },
 
       refreshToken: {

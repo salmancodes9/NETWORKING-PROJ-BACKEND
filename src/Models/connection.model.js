@@ -5,11 +5,11 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true,
     },
-    requesterId: {
+    requesterMemberProfileId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    receiverId: {
+    receiverMemberProfileId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
@@ -23,7 +23,8 @@ module.exports = (sequelize, DataTypes) => {
     indexes: [
       {
         unique: true,
-        fields: ["requesterId", "receiverId"],
+        fields: ["requesterMemberProfileId", "receiverMemberProfileId"],
+        name: "unique_connection_pair", // ← explicit short name fixes the length issue
       },
     ],
   });
