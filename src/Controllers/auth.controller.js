@@ -13,7 +13,7 @@ const register = async (req, res) => {
 };
 
 ///
-
+ 
 const login = async (req, res) => {
   try {
     const result = await loginService(req.body);
@@ -49,4 +49,3 @@ const refresh = async (req, res) => {
 };
 
 module.exports = { register, login, logout, getMe, refresh };
-

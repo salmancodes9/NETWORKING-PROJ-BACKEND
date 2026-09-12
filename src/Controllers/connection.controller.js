@@ -12,6 +12,7 @@ const send = async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 };
+
 const accept = async (req, res) => {
   try {
     const result = await acceptRequest(req.user.id, req.params.connectionId);
@@ -20,6 +21,7 @@ const accept = async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 };
+
 const reject = async (req, res) => {
   try {
     const result = await rejectRequest(req.user.id, req.params.connectionId);
@@ -28,4 +30,6 @@ const reject = async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 };
+
+
 module.exports = { send, accept , reject };
