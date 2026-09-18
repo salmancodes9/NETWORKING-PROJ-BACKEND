@@ -2,6 +2,7 @@ const db = require("../../Models");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = process.env.JWT_SECRET;
+exports.JWT_SECRET = JWT_SECRET;
 const JWT_REFRESH_SECRET = process.env.JWT_SECRET;
 
 

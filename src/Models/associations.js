@@ -38,4 +38,8 @@ module.exports = (db) => {
   db.FieldOfStudy.hasMany(db.Education, { foreignKey: "fieldOfStudyId" });
   db.Education.belongsTo(db.FieldOfStudy, { foreignKey: "fieldOfStudyId" });
   //END-EDUCATION//
+  //company-profile//
+  db.Profile.hasOne(db.CompanyProfile, { foreignKey: "profileId" });
+  db.CompanyProfile.belongsTo(db.Profile, { foreignKey: "profileId" });
+  //---//
 };
