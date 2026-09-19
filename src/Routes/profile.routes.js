@@ -1,20 +1,14 @@
 const express = require("express");
 const router = express.Router();
+const multer = require("multer");
+const upload = multer({ storage: multer.memoryStorage() }); // adjust to match your existing multer setup
 
-const {
-  createProfile,
-  myProfile,
-} = require("../Controllers/profile.controller/basicProfile.controller");
+const { getMyProfile, getProfileByUserId, updateProfile, updateProfilePicture } = require("../Controllers/memberProfile.controller");
 const authenticate = require("../Middleware/protectClinet");
-const { upload, pickFirstUploadedFile } = require("../Utils/upload");
 
-router.post(
-  "/createProfile",
-  authenticate,
-  upload.any(),
-  pickFirstUploadedFile,
-  createProfile,
-);
-router.get("/myProfile", authenticate, myProfile);
+router.get("/me", authenticate, getMyProfile);
+router.get("/:userId", authenticate, getProfileByUserId);
+router.put("/me", authenticate, updateProfile);
+router.post("/me/picture", authenticate, upload.single("image"), updateProfilePicture);
 
 module.exports = router;
