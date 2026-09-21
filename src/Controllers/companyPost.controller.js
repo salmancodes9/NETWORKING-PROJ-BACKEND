@@ -23,9 +23,11 @@ const create = async (req, res) => {
       return res.status(404).json({ message: "Profile not found" });
     }
 
-    // Only allow member profiles to create via this controller
-    if (profile.profileType !== "member") {
-      return res.status(403).json({ message: "Only member profiles can create member posts" });
+    // Only allow company profiles to create via this controller
+    if (profile.profileType !== "company") {
+      return res
+        .status(403)
+        .json({ message: "Only company profiles can create company posts" });
     }
 
     const { content } = req.body;
@@ -36,7 +38,7 @@ const create = async (req, res) => {
         req.file.originalname,
         req.file.buffer,
         req.file.mimetype,
-        "posts",
+        "company-posts",
       );
     }
 
@@ -44,20 +46,20 @@ const create = async (req, res) => {
       return res.status(400).json({ message: "Post must have text or image" });
     }
 
-    const post = await db.Post.create({
+    const post = await db.CompanyPost.create({
       profileId: profile.id,
       content: content ?? null,
       imageUrl: imageUrl ?? null,
     });
 
-    const savedPost = await db.Post.findByPk(post.id, {
+    const savedPost = await db.CompanyPost.findByPk(post.id, {
       include: [
         {
           model: db.Profile,
           include: [
             { model: db.User, attributes: ["id", "email", "role"] },
-            { model: db.MemberProfile },
             { model: db.CompanyProfile },
+            { model: db.MemberProfile },
           ],
         },
       ],
@@ -71,7 +73,7 @@ const create = async (req, res) => {
 
 const remove = async (req, res) => {
   try {
-    const post = await db.Post.findByPk(req.params.id, {
+    const post = await db.CompanyPost.findByPk(req.params.id, {
       include: [{ model: db.Profile }],
     });
 
@@ -95,15 +97,15 @@ const remove = async (req, res) => {
 
 const getAll = async (_req, res) => {
   try {
-    const posts = await db.Post.findAll({
+    const posts = await db.CompanyPost.findAll({
       where: { isDeleted: false },
       include: [
         {
           model: db.Profile,
           include: [
             { model: db.User, attributes: ["id", "email", "role"] },
-            { model: db.MemberProfile },
             { model: db.CompanyProfile },
+            { model: db.MemberProfile },
           ],
         },
       ],
@@ -126,7 +128,7 @@ const getMine = async (req, res) => {
       return res.status(404).json({ message: "Profile not found" });
     }
 
-    const posts = await db.Post.findAll({
+    const posts = await db.CompanyPost.findAll({
       where: {
         profileId: profile.id,
         isDeleted: false,
@@ -136,7 +138,6 @@ const getMine = async (req, res) => {
           model: db.Profile,
           include: [
             { model: db.User, attributes: ["id", "email", "role"] },
-            { model: db.MemberProfile },
             { model: db.CompanyProfile },
           ],
         },

@@ -1,12 +1,21 @@
-module.exports = (sequelize, DataTypes) => {
-  const CompanyPost = sequelize.define("CompanyPost", {
-    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    profileId: { type: DataTypes.INTEGER, allowNull: false },
-    content: { type: DataTypes.TEXT, allowNull: true },
-    imageUrl: { type: DataTypes.STRING, allowNull: true },
-    link: { type: DataTypes.STRING, allowNull: true },
-    isBoosted: { type: DataTypes.BOOLEAN, defaultValue: false },
-    isDeleted: { type: DataTypes.BOOLEAN, defaultValue: false },
-  }, { tableName: "company_posts", timestamps: true });
-  return CompanyPost;
-};
+const express = require("express");
+const router = express.Router();
+const multer = require("multer");
+const upload = multer({ storage: multer.memoryStorage() });
+
+const {
+  create,
+  remove,
+  getAll,
+  getMine,
+} = require("../Controllers/companyPost.controller");
+const authenticate = require("../Middleware/protectClinet");
+
+router.post("/", authenticate, upload.single("image"), create);
+router.delete("/:id", authenticate, remove);
+router.get("/", authenticate, getAll);
+router.get("/mine", authenticate, getMine);
+
+module.exports = router;
+
+      

@@ -42,4 +42,8 @@ module.exports = (db) => {
   db.Profile.hasOne(db.CompanyProfile, { foreignKey: "profileId" });
   db.CompanyProfile.belongsTo(db.Profile, { foreignKey: "profileId" });
   //---//
+  //company-post//
+  db.Profile.hasMany(db.CompanyPost, { foreignKey: "profileId", onDelete: "CASCADE" });
+db.CompanyPost.belongsTo(db.Profile, { foreignKey: "profileId" });
+//
 };

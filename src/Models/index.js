@@ -15,6 +15,7 @@ db.Message = require("./message.model")(sequelize, DataTypes);
 db.Post = require("./post.model")(sequelize, DataTypes);
 db.Connection = require("./connection.model")(sequelize, DataTypes)
 db.CompanyProfile = require('./companyProfile.model')(sequelize, DataTypes);
+db.CompanyPost = require('./companyPost.model')(sequelize, DataTypes);
 
 //education//
 db.School = require('./education/school.model')(sequelize, DataTypes);
